@@ -19,8 +19,8 @@ export async function POST(req: NextRequest) {
               fields: {
                 'Store Name': store_name,
                 'Owner Email': owner_email,
-                'Notes': `Niche: ${niche}`,
-                'Package Type': plan,
+                'Niche': niche,
+                'Package Tier': plan,
                 'Signup Date': new Date().toISOString().split('T')[0], // Format as YYYY-MM-DD
               },
             },
