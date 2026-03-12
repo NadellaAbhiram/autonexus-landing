@@ -68,13 +68,20 @@ export default function Form() {
           </div>
           <div className="mb-6">
             <label className="block text-sm font-semibold mb-2">Store Niche *</label>
-            <input
-              type="text"
+            <select
               name="niche"
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-              placeholder="e.g., Fitness Equipment"
-            />
+            >
+              <option value="">Select your niche...</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Home">Home</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Health">Health</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Pet">Pet</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           <div className="mb-6">
             <label className="block text-sm font-semibold mb-2">Which plan interests you?</label>

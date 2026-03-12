@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
               fields: {
                 'Store Name': store_name,
                 'Owner Email': owner_email,
-                'Notes': `Niche: ${niche}`,
+                'Niche': [niche], // Multiple Select field requires an array
                 'Package Tier': plan,
                 'Signup Date': new Date().toISOString().split('T')[0],
               },
