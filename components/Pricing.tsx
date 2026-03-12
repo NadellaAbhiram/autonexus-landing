@@ -12,7 +12,7 @@ export default function Pricing() {
       const response = await fetch(`/api/checkout?plan=${planName.toLowerCase()}`);
       const data = await response.json();
 
-      if (!data.planId || !data.keyId) {
+      if (!data.subscriptionId || !data.keyId) {
         alert('Error loading plan details');
         return;
       }
@@ -22,12 +22,13 @@ export default function Pricing() {
       script.src = 'https://checkout.razorpay.com/v1/checkout.js';
       script.async = true;
       script.onload = () => {
-        // Initialize Razorpay checkout
+        // Initialize Razorpay checkout with subscription_id
         const options = {
           key: data.keyId,
-          plan_id: data.planId,
+          subscription_id: data.subscriptionId,
+          name: 'AutoNexus',
+          description: `${planName} Plan - Monthly Subscription`,
           callback_url: `${window.location.origin}/api/payment-success`,
-          customer_notify: 1,
           notes: {
             plan: planName,
           },
