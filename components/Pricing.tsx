@@ -1,6 +1,50 @@
 'use client';
 
+import { useState } from 'react';
+
 export default function Pricing() {
+  const [loading, setLoading] = useState(false);
+
+  const handleCheckout = async (planName: string) => {
+    try {
+      setLoading(true);
+      // Fetch the plan details from API
+      const response = await fetch(`/api/checkout?plan=${planName.toLowerCase()}`);
+      const data = await response.json();
+
+      if (!data.planId || !data.keyId) {
+        alert('Error loading plan details');
+        return;
+      }
+
+      // Load Razorpay script
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.async = true;
+      script.onload = () => {
+        // Initialize Razorpay checkout
+        const options = {
+          key: data.keyId,
+          plan_id: data.planId,
+          callback_url: `${window.location.origin}/api/payment-success`,
+          customer_notify: 1,
+          notes: {
+            plan: planName,
+          },
+        };
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
+        setLoading(false);
+      };
+      document.body.appendChild(script);
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Error initiating checkout');
+      setLoading(false);
+    }
+  };
+
   const plans = [
     {
       name: "Starter",
@@ -77,12 +121,13 @@ export default function Pricing() {
                 <span className="text-4xl font-bold">{plan.price}</span>
                 <span className="text-gray-600">{plan.period}</span>
               </div>
-              <a
-                href={`/api/checkout?plan=${plan.name.toLowerCase()}`}
-                className={`w-full py-3 rounded-lg font-semibold text-center block mb-6 transition ${plan.buttonColor}`}
+              <button
+                onClick={() => handleCheckout(plan.name)}
+                disabled={loading}
+                className={`w-full py-3 rounded-lg font-semibold text-center block mb-6 transition ${plan.buttonColor} ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                {plan.buttonText}
-              </a>
+                {loading ? 'Processing...' : plan.buttonText}
+              </button>
               <ul className="space-y-3">
                 {plan.features.map((feature, i) => (
                   <li key={i} className="flex gap-3 text-gray-700">
