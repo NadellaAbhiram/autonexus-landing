@@ -17,8 +17,10 @@ export async function GET(req: NextRequest) {
     }
 
     // Create a Razorpay subscription server-side
-    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '';
-    const keySecret = process.env.RAZORPAY_KEY_SECRET || '';
+    // Trim to remove any accidental newlines/spaces from env vars
+    const keyId = (process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '').trim();
+    const keySecret = (process.env.RAZORPAY_KEY_SECRET || '').trim();
+    const planIdTrimmed = planId.trim();
     const credentials = Buffer.from(`${keyId}:${keySecret}`).toString('base64');
 
     const subscriptionResponse = await fetch('https://api.razorpay.com/v1/subscriptions', {
@@ -28,7 +30,7 @@ export async function GET(req: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        plan_id: planId,
+        plan_id: planIdTrimmed,
         total_count: 12,
         quantity: 1,
       }),
@@ -43,7 +45,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       subscriptionId: subscription.id,
-      keyId,
+      keyId: keyId,
     });
   } catch (error) {
     console.error('Checkout error:', error);
