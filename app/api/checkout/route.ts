@@ -5,9 +5,9 @@ export async function GET(req: NextRequest) {
     const plan = req.nextUrl.searchParams.get('plan');
 
     const planMap: Record<string, string> = {
-      starter: process.env.NEXT_PUBLIC_RAZORPAY_STARTER_PLAN_ID || '',
-      growth: process.env.NEXT_PUBLIC_RAZORPAY_GROWTH_PLAN_ID || '',
-      scale: process.env.NEXT_PUBLIC_RAZORPAY_SCALE_PLAN_ID || '',
+      starter: (process.env.NEXT_PUBLIC_RAZORPAY_STARTER_PLAN_ID || '').trim(),
+      growth: (process.env.NEXT_PUBLIC_RAZORPAY_GROWTH_PLAN_ID || '').trim(),
+      scale: (process.env.NEXT_PUBLIC_RAZORPAY_SCALE_PLAN_ID || '').trim(),
     };
 
     const planId = planMap[plan || 'starter'];

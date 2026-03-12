@@ -82,9 +82,9 @@ export default function Form() {
               name="package"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
             >
-              <option>Starter - ₹1,200</option>
-              <option>Growth - ₹3,500</option>
-              <option>Scale - ₹6,000</option>
+              <option value="Starter">Starter - ₹1,200/month</option>
+              <option value="Growth">Growth - ₹3,500/month</option>
+              <option value="Scale">Scale - ₹6,000/month</option>
             </select>
           </div>
 
